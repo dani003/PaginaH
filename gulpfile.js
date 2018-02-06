@@ -5,6 +5,16 @@ const browserSync = require('browser-sync').create();
 var reload = browserSync.reload;
 
 
+gulp.task('serve', ['pug', 'styles'], function(){
+  browserSync.init({
+    server:"./"
+  })
+  gulp.watch("./pug/index.pug", ['pug']);
+  gulp.watch("./pug/blocks/*.pug", ['pug']);
+  gulp.watch("./stylus/*.styl", ['styles']);
+  gulp.watch("./*.html").on('change', browserSync.reload);
+});
+
 gulp.task('styles', function(){
   gulp.src('./stylus/*.styl')
   .pipe(stylus())
@@ -21,16 +31,5 @@ gulp.task('pug', function buildHtml(){
   .pipe(browserSync.stream());
 });
 
-gulp.task('browser-sync', function(){
-  browserSync.init({
-    server:"./"
-  })
-});
 
-gulp.task('watch', ["browser-sync", "pug", "styles"]), () =>{
-  gulp.watch("./pug/*.pug", ['pug']);
-  gulp.watch("./stylus/*.styl", ['styles']);
-  gulp.watch("./*.html").on('change', browserSync.reload);
-}
-
-gulp.task('default', ["browser-sync", "pug", "watch", "styles"]);
+gulp.task('default', ["serve"]);
