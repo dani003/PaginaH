@@ -1,0 +1,7 @@
+.home {
+  background: #f00;
+}
+.test {
+  border: 1px solid #f00;
+  box-sizing: border-box;
+}
